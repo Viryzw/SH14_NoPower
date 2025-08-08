@@ -61,12 +61,13 @@ SH14
 - `USV` 总探测列表（去重）`manager.get_detected_usv() -> List[Target.id]`
 - 指定载具位置与朝向 `manager.get_state(typ, id) -> [pos, heading]`
 - 目标出现步次 `init_step`
+- 目标动力模型 `mode`：`'powerless'`-无动力，`'powerful'`-有动力
 
 ##### Utils/Refresher.py
 
 - 目标刷新步长 `refresh_interval`
 - 目标下次刷新的步次 `self.next_refresh_step`，注意本参数值应当与 `refresh_interval` 始终相等
-
+- 场上无目标时就刷新，保证总共出现八个，在任务结束后直接终止程序
 ---
 
 #### 四、开发说明
@@ -93,5 +94,7 @@ controls = [
 - 可选可视化：修改 `Manager.py`
     - `UAV` 轨迹：`init_uavs()` 中 `self.trajectory_visible.append(True)`
     - `USV` 轨迹：`init_usvs()` 中 `self.trajectory_visible.append(True)`
-    - ~~`Target` 轨迹：`add_targets()` 中 `self.trajectory_visible.append(True)` 和 `self.visualizer.trajectory_visible.append(True)`~~
     - `UAV` 历史探测区域：`__init__()` 中 `self.enable_swept_area = True`  `self.swept_area_start_time = 合适值`
+- 算法鲁棒性验证：
+    - 运行 `init.py` 以修改目标刷新位置（四条边随机）；
+    - 修改 `main.py` 中的 `mode` 参数，对不同动力模型的目标做测试

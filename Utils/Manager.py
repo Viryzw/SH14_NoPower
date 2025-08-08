@@ -118,7 +118,6 @@ class Manager:
             new_line_colors.append(self.line_colors[i])
             new_markers.append(self.markers[i])
             new_trajectory_visible.append(self.trajectory_visible[i])
-
             new_labels_manager.append(label)
             new_point_colors_manager.append(self.point_colors[i])
             new_line_colors_manager.append(self.line_colors[i])
@@ -142,7 +141,7 @@ class Manager:
         # 更新visualizer对象的数量
         self.visualizer.num = len(new_labels)
 
-    def update(self, control_info, t):
+    def update(self, control_info, t, mode):
         # 更新车辆和目标状态
         for typ, id_, v, omega in control_info:
             id_ = str(id_)
@@ -158,7 +157,7 @@ class Manager:
             elif typ.lower() == "target":
                 target = self.targets.get(id_)
                 if target:
-                    target.update()
+                    target.update(mode)
 
         # 计分更新
         for target in self.targets.values():
